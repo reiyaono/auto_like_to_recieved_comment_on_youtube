@@ -2,7 +2,9 @@
 
 require 'selenium-webdriver'
 
-d = Selenium::WebDriver.for :chrome
+# options = Selenium::WebDriver::Chrome::Options.new
+# options.add_argument('--headless')
+d = Selenium::WebDriver.for :chrome # options: options
 
 gmail = ARGV[0]
 password = ARGV[1]
@@ -17,19 +19,19 @@ d.get "https://accounts.google.com/ServiceLogin/identifier"
 sleep 2
 fill_input(d, :id, 'identifierId', gmail)
 fill_input(d, :class, 'zHQkBf', password)
-d.get "https://www.youtube.com/comments"
+d.get "https://www.youtube.com/comments?tab=inbox&ar=1566294013061"
 sleep 2
 d.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 sleep 2
-d&.find_element(:id, 'yt-comments-paginator')&.click
-sleep 5
+# d&.find_element(:id, 'yt-comments-paginator')&.click if d&.find_element(:id, 'yt-comments-paginator')
+# sleep 5
 
 begin
  hearts = d&.find_elements(:class, 'creator-heart-big-unhearted')
  hearts.each do |heart|
   p heart
   heart.click
-  sleep 1
+  sleep 0.1
  end
  p "Liked heart: #{hearts.count}"
 rescue Selenium::WebDriver::Error::NoSuchElementError
